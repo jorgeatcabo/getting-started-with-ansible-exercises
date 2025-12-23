@@ -1,0 +1,26 @@
+- hosts: aws
+  become: true
+
+  tasks:
+    - name: Install pip
+      package:
+        name: pip
+        state: present
+    
+    - name: Install AWS dependencies
+      pip:
+        name:
+          - boto3
+          - botocore
+
+    - name: List all EC2 keys in the current region
+      amazon.aws.ec2_key_info:
+        access_key: ASIA35SA5SUBMUX5I4TD
+        region: us-east-1
+        secret_key: zSKzQbex4k7VsiYeMDJl49nB56beE/xB1HJXHCqo
+        session_token: IQoJb3JpZ2luX2VjEEYaCXVzLXdlc3QtMiJHMEUCIEKaEFTq9TnIVkSl9V3QXEt+9jyfqRI5ff6/eTQKpuKYAiEAgjN5kHXSC0Oj2oWsy6jeXSvGdWNzZ2rixlUjIAw4FWYqvgIITxACGgw4MTk0MDExNjgxMzAiDAQczW+xOn6x8WqALiqbAgff+MwJDcrUvc/+TPt8V/l/9jdxrKhdZh/X1DXlAaFLcZamlrVCJnFEKVLyx3rXUNhsDyMLr3Tp3iRA4sW+B4ZC/SRuPli6561+oN505trgA8eQfJIVI6KtB8PshvrG08tOpCi4W+8a0i7PzmGMI8bXKhsW5jGHEBjbxJxBgGRGuLzAMD2C4y83tSvQjTRE2lT1fP4Sg3UuD9yUcZNXUIn5LEzO7Xcye7bKBYfG5oWQ/w14OJ3/xYbs+GasPiOc71XSmbpn8H1fklN3k3wBicRgljuC/8GrDk+GSfBqyy5p9/IbpI3Fsj95ma2yfg1/ZOQQYSKk2vfisTAay/gKheiyRNNI4w7jQYN67tY/AZVj7g6CYdwJ8kkF+Csw3dravAY6nQG6GlUfF+bQ5b4lvOZT+5Xv5DtAGO4OGfaciSGc/3RIP7EXqCxCxgyvCWk2b2Hfs4pkjuvau7l3egLq2D4IGd8IGBmu7DlJubsDYxplwgZ/4nOCxHnREjuAj9D9dRidYuTmeFEsWUmjjPM2k93ZBXYZjs8npjkrn1F1wLvB4g7K0RvGyLu2VTl9O81oKmb2dlFCtNQL3tIDpffoM5jK
+      register: ec2_keys
+    
+    - name: Show EC2 Keys
+      debug:
+        msg: "{{ ec2_keys }}"

@@ -1,0 +1,21 @@
+- hosts: aws
+  become: true
+
+  tasks:
+    - name: Error handling
+      block:
+        - name: Stat
+          stat:
+            path: /home/ec2-user/udacity
+
+        - name: Force a failure
+          command: /bin/false
+      rescue:
+        - name: Successful command
+          file:
+            path: /home/ec2-user/udacity
+            state: directory
+      always:
+        - name: Always do this
+          stat:
+            path: /etc

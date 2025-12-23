@@ -1,0 +1,24 @@
+- hosts: aws
+  become: true
+
+  tasks:
+    - name: Block commands
+      block:
+        - name: Install emacs
+          package:
+            name: emacs
+            state: present
+          register: emacs_package
+          tags:
+            - package
+        
+        - name: Run a command if the first command succeeds
+          command: uname
+          when: emacs_package.rc == 0
+
+        - name: Run command if truth_test equals true
+          debug: 
+            msg: "Only AWS Linux 2020 and newer"
+          when: ansible_facts['distribution_major_version'] | int >= 2020
+      tags:
+        - udacity
